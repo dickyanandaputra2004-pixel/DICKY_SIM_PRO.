@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SIM DICKY _INSTIPER YOGJA</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <style>
+    body { margin: 0; font-family: Arial; }
+
+    #header {
+      position: absolute;
+      z-index: 999;
+      width: 100%;
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 12px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #map { height: 100vh; width: 100%; }
+  </style>
+</head>
+
+<body>
+
+<div id="header">🌍 SIM DICKY _INSTIPER YOGJA</div>
+<div id="map"></div>
+
+<script>
+
+  // 📍 INSTIPER YOGYAKARTA CENTER
+  var map = L.map('map').setView([-7.7506, 110.4023], 18);
+
+  // 🛰️ SATELLITE MAP
+  L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { attribution: 'Satellite Map INSTIPER' }
+  ).addTo(map);
+
+  // =========================
+  // GLOBAL STYLE RESET (highlight)
+  // =========================
+  var activeLayer = null;
+
+  function styleNormal(color){
+    return {
+      color: "white",
+      weight: 2,
+      fillColor: color,
+      fillOpacity: 0.45
+    };
+  }
+
+  function styleActive(){
+    return {
+      color: "yellow",
+      weight: 3,
+      fillColor: "red",
+      fillOpacity: 0.6
+    };
+  }
+
+  // =========================
+  // ADD BUILDING FUNCTION
+  // =========================
+  function addBuilding(name, coords, color, luas) {
+
+    var layer = L.polygon(coords, styleNormal(color)).addTo(map);
+
+    function showPopup(){
+      layer.bindPopup(
+        "<b>" + name + "</b><br>Luas: " + luas + " m²"
+      ).openPopup();
+    }
+
+    layer.on("click", function () {
+
+      // reset previous highlight
+      if(activeLayer){
+        activeLayer.setStyle(styleNormal(activeLayer.options.fillColor));
+      }
+
+      // highlight current
+      layer.setStyle(styleActive());
+      activeLayer = layer;
+
+      showPopup();
+    });
+
+  }
+
+  // =========================
+  // GEDUNG INSTIPER
+  // =========================
+
+  addBuilding("Fakultas Pertanian",
+    [
+      [-7.7502,110.4019],
+      [-7.7502,110.4024],
+      [-7.7505,110.4024],
+      [-7.7505,110.4019]
+    ],
+    "green", 1200
+  );
+
+  addBuilding("Fakultas Kehutanan",
+    [
+      [-7.7498,110.4019],
+      [-7.7498,110.4024],
+      [-7.7502,110.4024],
+      [-7.7502,110.4019]
+    ],
+    "darkgreen", 1100
+  );
+
+  addBuilding("Fakultas Teknologi Pertanian",
+    [
+      [-7.7494,110.4019],
+      [-7.7494,110.4024],
+      [-7.7498,110.4024],
+      [-7.7498,110.4019]
+    ],
+    "orange", 1500
+  );
+
+  addBuilding("Rektorat INSTIPER",
+    [
+      [-7.7506,110.4025],
+      [-7.7506,110.4029],
+      [-7.7509,110.4029],
+      [-7.7509,110.4025]
+    ],
+    "blue", 900
+  );
+
+  addBuilding("Graha INSTIPER",
+    [
+      [-7.7509,110.4021],
+      [-7.7509,110.4025],
+      [-7.7512,110.4025],
+      [-7.7512,110.4021]
+    ],
+    "purple", 2000
+  );
+
+  addBuilding("Perpustakaan",
+    [
+      [-7.7504,110.4016],
+      [-7.7504,110.4020],
+      [-7.7507,110.4020],
+      [-7.7507,110.4016]
+    ],
+    "brown", 800
+  );
+
+  addBuilding("Kantin",
+    [
+      [-7.7501,110.4016],
+      [-7.7501,110.4020],
+      [-7.7504,110.4020],
+      [-7.7504,110.4016]
+    ],
+    "red", 500
+  );
+
+  addBuilding("Masjid Kampus",
+    [
+      [-7.7497,110.4016],
+      [-7.7497,110.4020],
+      [-7.7501,110.4020],
+      [-7.7501,110.4016]
+    ],
+    "gold", 700
+  );
+
+</script>
+
+</body>
+</html>
